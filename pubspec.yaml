@@ -42,6 +42,10 @@ dependencies:
   google_maps_flutter: ^2.12.3
   image_picker: ^1.1.2
   country_picker: ^2.0.27
+  shared_preferences: ^2.5.3
+  connectivity_plus: ^6.1.5
+  firebase_core: ^4.0.0
+  http: ^1.5.0
 
 dev_dependencies:
   flutter_test:

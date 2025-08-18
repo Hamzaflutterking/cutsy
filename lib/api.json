@@ -1,0 +1,3196 @@
+{
+	"info": {
+		"_postman_id": "ff4661d8-1746-4f2b-8be2-c30c4d836379",
+		"name": "cutsy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27478166",
+		"_collection_link": "https://restless-comet-66878.postman.co/workspace/yasir~ef811c0c-7414-4ff0-8fe5-bcadda2cd41c/collection/27478166-ff4661d8-1746-4f2b-8be2-c30c4d836379?action=share&source=collection_link&creator=27478166"
+	},
+	"item": [
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "adminLogin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"token\", pm.response.json().data.adminToken);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"admin@example.com\",\n    \"password\":\"admin123\"\n    // \"deviceToken\":\"asadasdsadsadsaa\"\n}   ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/auth/adminLogin",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"auth",
+										"adminLogin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "hairstyleandlength",
+					"item": [
+						{
+							"name": "adminCreateHairType",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"straight\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/hair/adminCreateHairType",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"hair",
+										"adminCreateHairType"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adminShowHairType",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}admin/hair/adminShowHairType",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"hair",
+										"adminShowHairType"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adminUpdateHairType",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"coilys\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/hair/adminUpdateHairType/0f0b0ee8-382d-4729-907e-26c98af9cd6c",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"hair",
+										"adminUpdateHairType",
+										"0f0b0ee8-382d-4729-907e-26c98af9cd6c"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adminDeleteHairType",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}admin/hair/adminDeleteHairType/0f0b0ee8-382d-4729-907e-26c98af9cd6c",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"hair",
+										"adminDeleteHairType",
+										"0f0b0ee8-382d-4729-907e-26c98af9cd6c"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adminCreateHairLength",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"extra long(below mid-back)\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/hair/adminCreateHairLength",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"hair",
+										"adminCreateHairLength"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adminShowHairLength",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"extra long(below midback)\"\n}"
+								},
+								"url": {
+									"raw": "{{localhost}}admin/hair/adminShowHairLength",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"hair",
+										"adminShowHairLength"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adminUpdateHairLength",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"short(above ears/crop cuts)\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/hair/adminUpdateHairLength/096f9314-9080-4878-b520-33576ac85569",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"hair",
+										"adminUpdateHairLength",
+										"096f9314-9080-4878-b520-33576ac85569"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adminDeleteHairLength",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}admin/hair/adminDeleteHairLength/096f9314-9080-4878-b520-33576ac85569",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"hair",
+										"adminDeleteHairLength",
+										"096f9314-9080-4878-b520-33576ac85569"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "barberexperience",
+					"item": [
+						{
+							"name": "adminCreateBarberExperience",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\":\"Master Stylist\",\n    \"description\":\"highly experienced with 8+ years in expert hair services\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/barberexperience/adminCreateBarberExperience",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"barberexperience",
+										"adminCreateBarberExperience"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adminShowBarberExperience",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "{{localhost}}admin/barberexperience/adminShowBarberExperience",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"barberexperience",
+										"adminShowBarberExperience"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adminUpdateBarberExperience",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\":\"Apprentice/Student\",\n    \"description\":\"currently enrolled in a barbering course or training programs\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/barberexperience/adminUpdateBarberExperience/a75fac9e-95fb-4702-a3ce-ab7314a5cf32",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"barberexperience",
+										"adminUpdateBarberExperience",
+										"a75fac9e-95fb-4702-a3ce-ab7314a5cf32"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adminDeleteBarberExperience",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}admin/barberexperience/adminDeleteBarberExperience/a75fac9e-95fb-4702-a3ce-ab7314a5cf32",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"barberexperience",
+										"adminDeleteBarberExperience",
+										"a75fac9e-95fb-4702-a3ce-ab7314a5cf32"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "barberservice",
+					"item": [
+						{
+							"name": "adminCreateBarberService",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"service\":\"Hair Cutting\",\n    \"role\":\"MALE\"\n   \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/barberservice/adminCreateBarberService",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"barberservice",
+										"adminCreateBarberService"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adminShowBarberService",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/barberservice/adminShowBarberService?role=MALE",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"barberservice",
+										"adminShowBarberService"
+									],
+									"query": [
+										{
+											"key": "role",
+											"value": "MALE"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adminUpdateBarberService",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"service\":\"Hair Cuttings\"\n   \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/barberservice/adminUpdateBarberService/0aca870d-9111-4783-81eb-b2c7fe3297ec",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"barberservice",
+										"adminUpdateBarberService",
+										"0aca870d-9111-4783-81eb-b2c7fe3297ec"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adminDeleteBarberService",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}admin/barberservice/adminDeleteBarberService/0aca870d-9111-4783-81eb-b2c7fe3297ec",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"barberservice",
+										"adminDeleteBarberService",
+										"0aca870d-9111-4783-81eb-b2c7fe3297ec"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "content",
+					"item": [
+						{
+							"name": "createPrivacyPolicy",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"text\":\"sdasjdjadhjashdjashdjahsjdhasjdhsajdhajh\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/content/createPrivacyPolicy",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"content",
+										"createPrivacyPolicy"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showPrivacyPolicy",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}admin/content/showPrivacyPolicy",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"content",
+										"showPrivacyPolicy"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updatePrivacyPolicy",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"text\":\"sdasjdjadhjashdjashdjahsjdhasjdhsajdhajh11\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/content/updatePrivacyPolicy/efe81a5c-89a0-4826-bd03-5a43821dd7c5",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"content",
+										"updatePrivacyPolicy",
+										"efe81a5c-89a0-4826-bd03-5a43821dd7c5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createTermsCondition",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"text\":\"sdasjdjadhjashdjashdjahsjdhasjdhsajdhajh\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/content/createTermsCondition",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"content",
+										"createTermsCondition"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showTermsCondtion",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}admin/content/showTermsCondtion",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"content",
+										"showTermsCondtion"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateTermsCondition",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"text\":\"sdasjdjadhjashdjashdjahsjdhasjdhsajdhajh11\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/content/updateTermsCondition/5aa14ab7-74e8-4a1e-9596-74a17ac12ef1",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"content",
+										"updateTermsCondition",
+										"5aa14ab7-74e8-4a1e-9596-74a17ac12ef1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showAllUsers",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}admin/content/showAllUsers",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"content",
+										"showAllUsers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showAllBarbers",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}admin/content/showAllBarbers",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"content",
+										"showAllBarbers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "countUsers",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}admin/content/countUsers",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"content",
+										"countUsers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "iosUsers",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}admin/content/iosUsers",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"content",
+										"iosUsers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "androidUsers",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}admin/content/androidUsers",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"content",
+										"androidUsers"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "payment",
+					"item": [
+						{
+							"name": "showAllPaymentRecieved",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}admin/payment/showAllPaymentRecieved",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"payment",
+										"showAllPaymentRecieved"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "transerAmountToBarberAccount",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"barberAccountId\":\"asdasdasdas\",\n    \"amount\":\"200\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}admin/payment/transerAmountToBarberAccount",
+									"host": [
+										"{{localhost}}admin"
+									],
+									"path": [
+										"payment",
+										"transerAmountToBarberAccount"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "signUp",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"jamesss@gmail.com\"\n    \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/auth/signUp",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"auth",
+										"signUp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "verifyOtp",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"token\", pm.response.json().data.userToken);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"jamesss@gmail.com\",\n    \"otp\":\"7792\",\n    \"password\":\"James@123\"    \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/auth/verifyOtp",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"auth",
+										"verifyOtp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "forgetPassword",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"yasirsaleemrajput@gmail.com\"\n    \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/auth/forgetPassword",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"auth",
+										"forgetPassword"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "resetPassword",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \n    \"password\":\"Chamber@12345\"\n    \n    \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/auth/resetPassword",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"auth",
+										"resetPassword"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"token\", pm.response.json().data.userToken);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \n    \"email\":\"jamesss@gmail.com\",\n    \"password\":\"James@123\"\n    \n    \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/auth/login",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editProfile",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/Users/mac/Desktop/Screenshot 2025-02-18 at 12.02.50 AM.png"
+										},
+										{
+											"key": "firstName",
+											"value": "chamber",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "lastName",
+											"value": "saleem",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "phoneNumber",
+											"value": "123819319",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "gender",
+											"value": "MALE",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}user/auth/editProfile",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"auth",
+										"editProfile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "changePassword",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"currentpassword\":\"Chamber@12345\",\n    \"newpassword\":\"Chamber@123456\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/auth/changePassword",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"auth",
+										"changePassword"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}user/auth/logOut",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"auth",
+										"logOut"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteAccount",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}user/auth/deleteAccount",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"auth",
+										"deleteAccount"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "socialLogin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"accessToken\":\"sasdasda\",\n    \"socialType\":\"GOOGLE\",\n    \"deviceType\":\"IOS\",\n    \"deviceToken\":\"asdadasdasda\",\n    \"email\":\"yasir@gmail.com\"\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/auth/socialLogin",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"auth",
+										"socialLogin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "resendOtp",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"chamber@gmail.com\" \n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/auth/resendOtp",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"auth",
+										"resendOtp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "userCreateProfile",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\":\"james\",\n    \"lastName\":\"bond\",\n    \"phoneNumber\":\"392193129\",\n    \"gender\":\"MALE\",\n    \"hairTypeId\":\"0359a7f8-2fbc-4535-b4c2-d7b75e6b80f4\",\n    \"hairLengthId\":\"265d9ad8-92b7-483e-ba93-c8fa258fae3a\",\n    \"latitude\":34.015833,\n    \"longitude\":-118.275917,\n    \"address\":\"+9223131231\",\n    \"addressLine1\":\"adsadasdasda\",\n    \"addressLine2\":\"asdasdsada\",\n    \"city\":\"SanFrancisco\",\n    \"state\":\"California\",\n    \"country\":\"USA\",\n    \"postalcode\":\"1231231\",\n    \"deviceToken\":\"asdasdada\",\n    \"deviceType\":\"ANDROID\"\n \n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/auth/userCreateProfile",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"auth",
+										"userCreateProfile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "chat",
+					"item": [
+						{
+							"name": "createChatRoom",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"otherUserId\":\"57c4a9a0-ed95-44c7-a594-869a934c466c\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/chat/createChatRoom",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"chat",
+										"createChatRoom"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getChatRoom",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}user/chat/getChatRoom",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"chat",
+										"getChatRoom"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "address",
+					"item": [
+						{
+							"name": "saveUserAddress",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"latitude\":34.015833,\n    \"longitude\":-118.275917,\n    \"address\":\"asdas\",\n    \"addressLine1\":\"a-sds\",\n    \"addressLine2\":\"sdssds\",\n    \"city\":\"newyork\",\n    \"state\":\"califoria\",\n    \"country\":\"usa\",\n    \"postalcode\":\"1231231\"\n\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/address/saveUserAddress",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"address",
+										"saveUserAddress"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showUserSaveAddress",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}user/address/showUserSaveAddress",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"address",
+										"showUserSaveAddress"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "homefeed",
+					"item": [
+						{
+							"name": "showNearestBarbers",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}user/homefeed/showNearestBarbers",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"homefeed",
+										"showNearestBarbers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showBarbersBySearchService",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}user/homefeed/showBarbersBySearchService?search=Hair Extensions",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"homefeed",
+										"showBarbersBySearchService"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Hair Extensions"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "saveBarberInFavoriteList",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}user/homefeed/saveBarberInFavoriteList/4dee9d57-f9ce-4276-bfdb-3bb513043629",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"homefeed",
+										"saveBarberInFavoriteList",
+										"4dee9d57-f9ce-4276-bfdb-3bb513043629"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showBarberFavouriteList",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}user/homefeed/showBarberFavouriteList",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"homefeed",
+										"showBarberFavouriteList"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showTrendingBarbers",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}user/homefeed/showTrendingBarbers",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"homefeed",
+										"showTrendingBarbers"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "booking",
+					"item": [
+						{
+							"name": "createBookingAndPayment",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \n    \"barberId\":\"4dee9d57-f9ce-4276-bfdb-3bb513043629\",\n    \"day\":\"sat\",\n    \"startTime\":\"05:00\",\n    \"endTime\":\"06:00\",\n    \"amount\":\"300\",\n    \"locationName\":\"134,North square,new york\",\n    \"locationLat\":34.015833,\n    \"locationLng\":-118.275917,\n    \"services\":\"4eb831a6-a36c-4194-8a5b-d021df1dfc9e\"\n    // \"paymentMethod\":\"pm_1RoUMZ4D2lBn8DRlv1Iz967C\"\n    \n    \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/booking/createBookingAndPayment",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"booking",
+										"createBookingAndPayment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showAppoinmentDetail",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}user/booking/showAppoinmentDetail/9b1169c5-cc7b-4969-8264-4ea0b3693555",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"booking",
+										"showAppoinmentDetail",
+										"9b1169c5-cc7b-4969-8264-4ea0b3693555"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cancelAppointment",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"reason\":\"too expensive\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/booking/cancelAppointment/9b1169c5-cc7b-4969-8264-4ea0b3693555",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"booking",
+										"cancelAppointment",
+										"9b1169c5-cc7b-4969-8264-4ea0b3693555"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "trackBarber",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"latitude\":34.015833,\n    \"longitude\":-118.275917,\n    \"barberLatitude\":34.015833, \n    \"barberLongitude\":-118.275917,\n    \"status\":\"CANCELLED\",\n    \"bookingId\":\"9b1169c5-cc7b-4969-8264-4ea0b3693555\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/booking/trackBarber/4dee9d57-f9ce-4276-bfdb-3bb513043629",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"booking",
+										"trackBarber",
+										"4dee9d57-f9ce-4276-bfdb-3bb513043629"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showInvoiceDetail",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}user/booking/showInvoiceDetail/9b1169c5-cc7b-4969-8264-4ea0b3693555",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"booking",
+										"showInvoiceDetail",
+										"9b1169c5-cc7b-4969-8264-4ea0b3693555"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showPaymentReceipt",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}user/booking/showPaymentReceipt/asdasdasdasdsad",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"booking",
+										"showPaymentReceipt",
+										"asdasdasdasdsad"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "submitReview",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"bookingId\":\"437d1098-44b5-4613-8689-42ab7641f5b2\",\n    \"rating\":3.5,\n    \"review\":\"better service\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/booking/submitReview",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"booking",
+										"submitReview"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "paymentmethod",
+					"item": [
+						{
+							"name": "addpaymentmethod",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"paymentMethodId\":\"pm_1RoUMZ4D2lBn8DRlv1Iz967C\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}user/paymentmethod/addPaymentMethod",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"paymentmethod",
+										"addPaymentMethod"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showPaymentMethods",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}user/paymentmethod/showPaymentMethods",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"paymentmethod",
+										"showPaymentMethods"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "appoinmenthistory",
+					"item": [
+						{
+							"name": "showUserUpComingAppoinment",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}user/appoinmenthistory/showUserUpComingAppoinment",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"appoinmenthistory",
+										"showUserUpComingAppoinment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showUserOngoingAppoinment",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}user/appoinmenthistory/showUserUpComingAppoinment",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"appoinmenthistory",
+										"showUserUpComingAppoinment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showUserPastAppoinment",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}user/appoinmenthistory/showUserPastAppoinment",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"appoinmenthistory",
+										"showUserPastAppoinment"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "notification",
+					"item": [
+						{
+							"name": "showAllNotification",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}user/notification/showAllNotification",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"notification",
+										"showAllNotification"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "readNotification",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}user/notification/readNotification/asdasdasdasda",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"notification",
+										"readNotification",
+										"asdasdasdasda"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "onAndOffNotification",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}user/notification/onAndOffNotification",
+									"host": [
+										"{{localhost}}user"
+									],
+									"path": [
+										"notification",
+										"onAndOffNotification"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "barber",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "signUp",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"jimmyyy@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/auth/singUp",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"auth",
+										"singUp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "verifyOtp",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"token\", pm.response.json().data.barberToken);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"jimmyyy@gmail.com\",\n    \"otp\":\"9874\",\n    // \"name\":\"chamber\",\n    \"password\":\"Jimmy@123\"\n    // \"phoneNumber\":\"012312301293\",\n    // \"gender\":\"MALE\",\n    // \"experienceId\":\"026c37f3-eee1-4945-a70c-47fff6f065d4\",\n    // \"hairTypeId\":\"06d5803a-6849-4c59-a806-547be5f10355\",\n    // \"hairLengthId\":\"480a5000-be05-40ac-a674-7e3c3082a4d1\",\n    // \"latitude\":34.015833,\n    // \"longitude\":-118.275917,\n    // \"address\":\"ASDASDA\",\n    // \"addressLine1\":\"asdassdasda\",\n    // \"addressLine2\":\"asdasdad\",\n    // \"city\":\"newyork\",\n    // \"state\":\"califoria\",\n    // \"country\":\"Usa\",\n    // \"postalcode\":\"asdasda\",\n    // \"deviceToken\":\"asdadadasda\",\n    // \"deviceType\":\"IOS\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/auth/verifyOtp",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"auth",
+										"verifyOtp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "forgetPassword",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"chamber@gmail.com\"\n   \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/auth/forgetPassword",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"auth",
+										"forgetPassword"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "resetPassword",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\":\"Chamber@12345\"\n   \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/auth/resetPassword",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"auth",
+										"resetPassword"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"token\", pm.response.json().data.barberToken);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"jimmy@gmail.com\",\n    \"password\":\"Jimmy@123\"\n   \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/auth/login",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editProfile",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "chamberss",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "asdsada",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "gender",
+											"value": "MALE",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "experience",
+											"value": "2 year",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "bio",
+											"value": "sdaasdsds",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/Users/mac/Desktop/Screenshot 2025-03-22 at 2.55.58 AM.png",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}barber/auth/editProfile",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"auth",
+										"editProfile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logOut",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{localhost}}barber/auth/logOut",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"auth",
+										"logOut"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "changePassword",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"currentpassword\":\"Chamber@12345\",\n    \"newpassword\":\"Chamber@123456\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/auth/changePassword",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"auth",
+										"changePassword"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteAccount",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}barber/auth/deleteAccount",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"auth",
+										"deleteAccount"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "socialLogin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "   {\n    \"accessToken\":\"sasdasda\",\n    \"socialType\":\"GOOGLE\",\n    \"deviceType\":\"IOS\",\n    \"deviceToken\":\"asdadasdasda\",\n    \"email\":\"yasir@gmail.com\"\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/auth/socialLogin",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"auth",
+										"socialLogin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "barberCreateProfile",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"jimmy\",\n    \"phoneNumber\":\"012312301293\",\n    \"gender\":\"MALE\",\n    \"experienceId\":\"49623f98-da9a-4ef7-ab9d-9488bfa8c2e1\",\n    \"hairTypeId\":\"0359a7f8-2fbc-4535-b4c2-d7b75e6b80f4\",\n    \"hairLengthId\":\"265d9ad8-92b7-483e-ba93-c8fa258fae3a\",\n    \"latitude\":34.015833,\n    \"longitude\":-118.275917,\n    \"address\":\"ASDASDA\",\n    \"addressLine1\":\"asdassdasda\",\n    \"addressLine2\":\"asdasdad\",\n    \"city\":\"newyork\",\n    \"state\":\"califoria\",\n    \"country\":\"Usa\",\n    \"postalcode\":\"asdasda\",\n    \"deviceToken\":\"asdasda\",\n    \"deviceType\":\"IOS\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/auth/barberCreateProfile",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"auth",
+										"barberCreateProfile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "resendOtp",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"chamber@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/auth/resendOtp",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"auth",
+										"resendOtp"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "service",
+					"item": [
+						{
+							"name": "addServices",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"price\":\"200\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/service/addServices/243f8fff-e5f3-4706-abcc-3959f91c2aec",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"service",
+										"addServices",
+										"243f8fff-e5f3-4706-abcc-3959f91c2aec"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showServices",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}barber/service/showServices",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"service",
+										"showServices"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editService",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"price\":\"300\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/service/editService/2a40b4f2-7a49-4f8f-b808-7e20edeada36",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"service",
+										"editService",
+										"2a40b4f2-7a49-4f8f-b808-7e20edeada36"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "availablehourandsubmitdocument",
+					"item": [
+						{
+							"name": "addAvailableHour",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"starttime\":\"06:00 am\",\n    \"endtime\":\"07:00 am\",\n    \"day\":\"SAT\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/availablehourandsubmitdocument/addAvailableHour",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"availablehourandsubmitdocument",
+										"addAvailableHour"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showAvailableHour",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{localhost}}barber/availablehourandsubmitdocument/showAvailableHour",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"availablehourandsubmitdocument",
+										"showAvailableHour"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "barberSubmitDocument",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "document",
+											"type": "file",
+											"src": "/Users/mac/Desktop/Screenshot 2025-03-22 at 2.19.33 AM.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}barber/availablehourandsubmitdocument/barberSubmitDocument",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"availablehourandsubmitdocument",
+										"barberSubmitDocument"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "businessaccount",
+					"item": [
+						{
+							"name": "addbarberBusinessAccount",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n     \"accountNumber\":\"000123456789\",\n    \"routingNumber\":\"110000000\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/businessaccount/addbarberBusinessAccount",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"businessaccount",
+										"addbarberBusinessAccount"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showbarberBusinessAccount",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}barber/businessaccount/showbarberBusinessAccount",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"businessaccount",
+										"showbarberBusinessAccount"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "checkBarberBalance",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}barber/businessaccount/checkBarberBalance",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"businessaccount",
+										"checkBarberBalance"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "withDrawAmountBarber",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\":100,\n    \"destination\":\"sadasdasdasdassda\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}barber/businessaccount/withDrawAmountBarber",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"businessaccount",
+										"withDrawAmountBarber"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showAllBarberTransactions",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}barber/businessaccount/showAllBarberTransactions",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"businessaccount",
+										"showAllBarberTransactions"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "appoinmenthistory",
+					"item": [
+						{
+							"name": "showBarberUpComingAppoinment",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}barber/appoinmenthistory/showBarberUpComingAppoinment",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"appoinmenthistory",
+										"showBarberUpComingAppoinment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showBarberOnGoingAppoinment",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}barber/appoinmenthistory/showBarberOnGoingAppoinment",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"appoinmenthistory",
+										"showBarberOnGoingAppoinment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showBarberPastAppoinment",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}barber/appoinmenthistory/showBarberPastAppoinment",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"appoinmenthistory",
+										"showBarberPastAppoinment"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "dashboard",
+					"item": [
+						{
+							"name": "showLatestUpcomingAppoinment",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}barber/dashboard/showLatestUpcomingAppoinment",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"dashboard",
+										"showLatestUpcomingAppoinment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showAllUpcomingAppoinments",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}barber/dashboard/showAllUpcomingAppoinments",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"dashboard",
+										"showAllUpcomingAppoinments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "showAllStats",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}barber/dashboard/showAllStats",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"dashboard",
+										"showAllStats"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "notification",
+					"item": [
+						{
+							"name": "showAllNotification",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}barber/notification/showAllNotification",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"notification",
+										"showAllNotification"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "readNotification",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}barber/notification/readNotification/asdasdasdasda",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"notification",
+										"readNotification",
+										"asdasdasdasda"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "onAndOffNotification",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}barber/notification/onAndOffNotification",
+									"host": [
+										"{{localhost}}barber"
+									],
+									"path": [
+										"notification",
+										"onAndOffNotification"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "localhost",
+			"value": "http://localhost:4000/api/v1/",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUwMDk0OWE4LTU0ZTAtNDkxYi05NTc5LTU2MWZmZWVjMzQ3NCIsInVzZXJUeXBlIjoiQURNSU4iLCJpYXQiOjE3NTA5NzA4NTMsImV4cCI6MTc1MTA1NzI1M30.E5IE999wB-ddZtCL7y1nyucQbaIg9OFCMyC-Lbf2oTQ",
+			"type": "string"
+		}
+	]
+}
