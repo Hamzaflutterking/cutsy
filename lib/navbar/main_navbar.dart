@@ -1,7 +1,5 @@
 // lib/screens/main_screen.dart
 
-// ignore_for_file: unused_shown_name
-
 import 'package:cutcy/home/appointment/appointment_screen.dart';
 import 'package:cutcy/home/home/home_screen.dart';
 import 'package:cutcy/home/profile/profile_screen.dart';
@@ -20,7 +18,6 @@ class MainScreen extends StatelessWidget {
   final _pages = [
     HomeScreen(),
     AppointmentScreen(),
-
     WalletScreen(), // Replace WalletController() with the actual WalletScreen widget
     ProfileScreen(),
   ];

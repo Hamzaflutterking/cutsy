@@ -1,14 +1,20 @@
 import 'package:cutcy/auth/splash_screen.dart';
+import 'package:cutcy/bindings/global_bindings.dart';
 import 'package:cutcy/constants/constants.dart';
+import 'package:cutcy/services/api_configs.dart';
+import 'package:cutcy/services/api_service.dart';
+import 'package:cutcy/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+ApiService apiService = ApiService(baseUrl: ApiConfig.baseUrl);
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  await Get.putAsync(() => StorageService().init());
   runApp(const MyApp());
 }
 
@@ -24,6 +30,7 @@ class MyApp extends StatelessWidget {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.05)),
           child: GetMaterialApp(
+            initialBinding: GlobalBinding(),
             transitionDuration: Duration(milliseconds: 600),
             defaultTransition: Transition.fadeIn,
             debugShowCheckedModeBanner: false,

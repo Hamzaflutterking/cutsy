@@ -20,6 +20,7 @@ class GenderSelectionScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              BackButton(color: white),
               Text(
                 "Select your gender",
                 style: TextStyle(color: white, fontSize: 22.sp, fontWeight: FontWeight.bold),

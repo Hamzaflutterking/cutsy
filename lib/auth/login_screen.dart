@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:cutcy/auth/auth_controller.dart';
+import 'package:cutcy/auth/forget_password.dart';
 import 'package:cutcy/auth/sign_up_screen.dart';
 import 'package:cutcy/constants/constants.dart';
 import 'package:cutcy/widgets/AppButton.dart';
@@ -57,17 +58,35 @@ class LoginScreen extends StatelessWidget {
                   16.verticalSpace,
 
                   // Remember Me Checkbox
-                  Obx(
-                    () => GestureDetector(
-                      onTap: () => controller.toggleRememberMe(),
-                      behavior: HitTestBehavior.opaque,
-                      child: Row(
-                        children: [
-                          Checkbox(value: controller.rememberMe.value, onChanged: (_) => controller.toggleRememberMe(), activeColor: Colors.yellow),
-                          Text('Remember Me', style: TextStyle(color: white)),
-                        ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Obx(
+                        () => GestureDetector(
+                          onTap: () => controller.toggleRememberMe(),
+                          behavior: HitTestBehavior.opaque,
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                value: controller.rememberMe.value,
+                                onChanged: (_) => controller.toggleRememberMe(),
+                                activeColor: Colors.yellow,
+                              ),
+                              Text('Remember Me', style: TextStyle(color: white)),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+
+                      GestureDetector(
+                        onTap: () => Get.to(() => ForgotPasswordScreen()), // Navigate to Forget Password Screen
+                        child: Text(
+                          'Forgot Password?',
+
+                          style: TextStyle(color: white, fontSize: 13.sp, decoration: TextDecoration.underline, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ],
                   ),
 
                   16.verticalSpace,

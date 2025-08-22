@@ -1,18 +1,19 @@
-// ignore_for_file: use_super_parameters, deprecated_member_use
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+import 'package:cutcy/auth/auth_controller.dart';
 import 'package:cutcy/constants/constants.dart';
 import 'package:cutcy/home/bookings/book_now_screen.dart';
 import 'package:cutcy/home/bookings/nearby_favorites_screen..dart';
 import 'package:cutcy/home/bookings/nearby_screen.dart';
 import 'package:cutcy/home/search/home_searah_screen.dart';
 import 'package:cutcy/notifications/notiiations_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
+  HomeScreen({Key? key}) : super(key: key);
+  final AuthController authC = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +63,7 @@ class HomeScreen extends StatelessWidget {
                             Row(
                               children: [
                                 Text(
-                                  "134 North Square",
+                                  authC.userModel?.data?.addressLine1.toString() ?? "", //"134 North Square",
                                   style: TextStyle(fontWeight: FontWeight.bold, color: black, fontSize: 14.sp),
                                 ),
                                 GestureDetector(
@@ -73,8 +74,8 @@ class HomeScreen extends StatelessWidget {
                             ),
 
                             Text(
-                              "Toronto, CA",
-                              style: TextStyle(color: black.withOpacity(0.68), fontSize: 13.sp, fontWeight: FontWeight.w400),
+                              "${authC.userModel?.data?.city ?? ""},${authC.userModel?.data?.country ?? ""}", //"Toronto, CA",
+                              style: TextStyle(color: black.withValues(alpha: 0.68), fontSize: 13.sp, fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
@@ -91,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                     // Headline
                     Text(
                       "Your best hair day starts here.\nReady to book?",
-                      style: TextStyle(fontWeight: FontWeight.bold, color: black, fontSize: 22.sp, height: 1.2),
+                      style: TextStyle(fontWeight: FontWeight.bold, color: black, fontSize: 20.sp, height: 1.2),
                     ),
                     22.verticalSpace,
                     // Search bar
@@ -123,26 +124,22 @@ class HomeScreen extends StatelessWidget {
                     // Card scroll area
                     SizedBox(
                       height: 250.h,
-                      child: ListView(
+                      child: ListView.builder(
+                        itemCount: 2,
                         scrollDirection: Axis.horizontal,
                         physics: BouncingScrollPhysics(),
-                        children: [
-                          _BarberCard(
+                        itemBuilder: (context, index) {
+                          return _BarberCard(
                             name: 'Richard Anderson',
                             rating: '4.9',
                             address: '134 North Square, New York',
                             image: "assets/images/Frame 1686560766.png",
                             yellow: kprimaryColor,
-                          ),
-                          14.horizontalSpace,
-                          _BarberCard(
-                            name: 'Sophie Tran',
-                            rating: '4.8',
-                            address: '245 Brighton Ave, NY',
-                            image: "assets/images/Frame 1686560766.png",
-                            yellow: kprimaryColor,
-                          ),
-                        ],
+                            onTap: () {
+                              Get.to(() => BookNowScreen());
+                            },
+                          );
+                        },
                       ),
                     ),
                     50.verticalSpace,
@@ -249,84 +246,96 @@ class _BarberCard extends StatelessWidget {
   final String address;
   final String image;
   final Color yellow;
+  final VoidCallback? onTap;
 
-  const _BarberCard({required this.name, required this.rating, required this.address, required this.image, required this.yellow});
+  const _BarberCard({
+    Key? key,
+    required this.name,
+    required this.rating,
+    required this.address,
+    required this.image,
+    required this.yellow,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 220.w,
-      height: 250.h,
-      decoration: BoxDecoration(
-        color: ksecondaryColor,
-        borderRadius: BorderRadius.circular(22.r),
-        boxShadow: [BoxShadow(color: black.withOpacity(0.10), blurRadius: 16, offset: Offset(0, 4))],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(22.r)),
-            child: Image.asset(image, width: 220.w, height: 98.h, fit: BoxFit.cover),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(14.w, 8.h, 14.w, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 16.sp),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                3.verticalSpace,
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        address,
-                        style: TextStyle(color: Colors.white54, fontSize: 11.5.sp, fontWeight: FontWeight.bold),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Icon(Icons.star, color: kprimaryColor, size: 16.sp),
-                    2.horizontalSpace,
-                    Text(
-                      rating,
-                      style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 13.sp),
-                    ),
-                  ],
-                ),
-              ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 220.w,
+        height: 250.h,
+        decoration: BoxDecoration(
+          color: ksecondaryColor,
+          borderRadius: BorderRadius.circular(22.r),
+          boxShadow: [BoxShadow(color: black.withValues(alpha: 0.10), blurRadius: 16, offset: Offset(0, 4))],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(22.r)),
+              child: Image.asset(image, width: 220.w, height: 98.h, fit: BoxFit.cover),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(14.w, 0, 14.w, 12.h),
-            child: SizedBox(
-              width: double.infinity,
-              height: 36.h,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: yellow,
-                  foregroundColor: black,
-                  elevation: 0,
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
-                ),
-                onPressed: () {
-                  Get.to(() => BookNowScreen());
-                },
-                child: Text(
-                  'Book Now',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+            Padding(
+              padding: EdgeInsets.fromLTRB(14.w, 8.h, 14.w, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 16.sp),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  3.verticalSpace,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          address,
+                          style: TextStyle(color: Colors.white54, fontSize: 11.5.sp, fontWeight: FontWeight.bold),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Icon(Icons.star, color: kprimaryColor, size: 16.sp),
+                      2.horizontalSpace,
+                      Text(
+                        rating,
+                        style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 13.sp),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(14.w, 0, 14.w, 12.h),
+              child: SizedBox(
+                width: double.infinity,
+                height: 36.h,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: yellow,
+                    foregroundColor: black,
+                    elevation: 0,
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+                  ),
+                  onPressed: () {
+                    Get.to(() => BookNowScreen());
+                  },
+                  child: Text(
+                    'Book Now',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

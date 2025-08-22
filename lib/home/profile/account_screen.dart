@@ -29,7 +29,7 @@ class AccountScreen extends StatelessWidget {
         break;
       case 3:
         // Navigate to ResetPasswordScreen
-        Get.to(() => ResetPasswordScreen()); // Ensure you're navigating to the actual widget
+        Get.to(() => ChangePasswordScreen()); // Ensure you're navigating to the actual widget
         break;
       case 4:
         Get.dialog(

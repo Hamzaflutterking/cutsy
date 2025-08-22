@@ -18,7 +18,7 @@ class ResetPasswordController extends GetxController {
   }
 }
 
-class ResetPasswordScreen extends StatelessWidget {
+class ChangePasswordScreen extends StatelessWidget {
   final ResetPasswordController _controller = Get.put(ResetPasswordController());
 
   @override

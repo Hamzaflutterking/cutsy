@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.cutcy"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35//flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

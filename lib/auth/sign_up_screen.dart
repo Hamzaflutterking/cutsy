@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:cutcy/auth/auth_controller.dart';
 import 'package:cutcy/constants/constants.dart';
 import 'package:cutcy/widgets/AppButton.dart';
@@ -74,21 +72,37 @@ class SignUpScreen extends StatelessWidget {
 
                 20.verticalSpace,
                 Obx(
-                  () => Row(
-                    children: [
-                      Checkbox(value: controller.agreeToTerms.value, onChanged: (_) => controller.toggleAgreeToTerms(), activeColor: kprimaryColor),
-                      Expanded(
-                        child: Text(
-                          'I agree to the Terms and Conditions',
-                          style: TextStyle(color: white, fontSize: 14.sp),
+                  () => GestureDetector(
+                    onTap: () => controller.toggleAgreeToTerms(),
+                    child: Row(
+                      children: [
+                        Checkbox(
+                          value: controller.agreeToTerms.value,
+                          onChanged: (_) => controller.toggleAgreeToTerms(),
+                          activeColor: kprimaryColor,
+                          checkColor: black,
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Text(
+                            'I agree to the Terms and Conditions',
+                            style: TextStyle(color: white, fontSize: 14.sp),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
                 20.verticalSpace,
-                AuthButton(text: 'Sign Up', onTap: controller.signup, textColor: black),
+                // AuthButton(text: 'Sign Up', onTap: controller.signup, textColor: black),
+                Obx(
+                  () => AuthButton(
+                    text: 'Sign Up',
+                    onTap: controller.signup,
+                    textColor: black,
+                    isLoading: controller.isLoading.value, // NEW
+                  ),
+                ),
 
                 20.verticalSpace,
                 Center(
