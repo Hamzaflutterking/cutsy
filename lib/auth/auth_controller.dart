@@ -106,6 +106,7 @@ class AuthController extends GetxController {
       userModel = UserModel.fromJson(res);
       // Store token for subsequent authed requests
       apiService.setToken(userModel?.data?.userToken ?? ""); // uses your existing setter from ApiService
+      StorageService.to.saveString("token", userModel?.data?.userToken ?? "");
 
       // (Optional) persist to local storage if you have it
       // await LocalStorage.saveToken(token);

@@ -96,7 +96,7 @@ class SearchResulteScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      Get.to(() => BookNowScreen()); // Navigate to BookNowScreen
+                      // Get.to(() => BookNowScreen()); // Navigate to BookNowScreen
                     },
                     child: Card(
                       color: ksecondaryColor,

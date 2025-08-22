@@ -1,4 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cutcy/home/homes/barber_model.dart';
+import 'package:cutcy/home/homes/home_controller.dart';
+import 'package:cutcy/widgets/backend_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,14 +9,15 @@ import 'package:get/get.dart';
 import 'package:cutcy/auth/auth_controller.dart';
 import 'package:cutcy/constants/constants.dart';
 import 'package:cutcy/home/bookings/book_now_screen.dart';
-import 'package:cutcy/home/bookings/nearby_favorites_screen..dart';
-import 'package:cutcy/home/bookings/nearby_screen.dart';
+import 'package:cutcy/home/homes/favs/favorites_screen..dart';
+import 'package:cutcy/home/homes/nearby/nearby_screen.dart';
 import 'package:cutcy/home/search/home_searah_screen.dart';
 import 'package:cutcy/notifications/notiiations_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
   final AuthController authC = Get.find();
+  final HomeController homeC = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,12 +54,14 @@ class HomeScreen extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        CircleAvatar(
-                          radius: 21.r,
-                          backgroundImage: AssetImage(
-                            "assets/images/young-hispanic-haidresser-and-hairstylist-standing-2024-10-18-17-47-23-utc 1.png",
-                          ),
-                        ),
+                        // Circle avatar
+                        BackendImage.circle(url: authC.userModel?.data?.image, size: 56),
+                        // CircleAvatar(
+                        //   radius: 21.r,
+                        //   backgroundImage: AssetImage(
+                        //     "assets/images/young-hispanic-haidresser-and-hairstylist-standing-2024-10-18-17-47-23-utc 1.png",
+                        //   ),
+                        // ),
                         12.horizontalSpace,
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,27 +127,75 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     18.verticalSpace,
+
                     // Card scroll area
-                    SizedBox(
-                      height: 250.h,
-                      child: ListView.builder(
-                        itemCount: 2,
-                        scrollDirection: Axis.horizontal,
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return _BarberCard(
-                            name: 'Richard Anderson',
-                            rating: '4.9',
-                            address: '134 North Square, New York',
-                            image: "assets/images/Frame 1686560766.png",
-                            yellow: kprimaryColor,
-                            onTap: () {
-                              Get.to(() => BookNowScreen());
-                            },
-                          );
-                        },
-                      ),
+                    // SizedBox(
+                    //   height: 250.h,
+                    //   child: ListView.builder(
+                    //     itemCount: 2,
+                    //     scrollDirection: Axis.horizontal,
+                    //     physics: BouncingScrollPhysics(),
+                    //     itemBuilder: (context, index) {
+                    //       return _BarberCard(
+                    //         name: 'Richard Anderson',
+                    //         rating: '4.9',
+                    //         address: '134 North Square, New York',
+                    //         image: "assets/images/Frame 1686560766.png",
+                    //         yellow: kprimaryColor,
+                    //         onTap: () {
+                    //           Get.to(() => BookNowScreen());
+                    //         },
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Trending barbers",
+                          style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 16.sp),
+                        ),
+                        GestureDetector(
+                          onTap: () => homeC.refreshTrending(),
+                          child: Text(
+                            "Refresh",
+                            style: TextStyle(color: kprimaryColor, fontWeight: FontWeight.w500, fontSize: 14.sp),
+                          ),
+                        ),
+                      ],
                     ),
+                    12.verticalSpace,
+
+                    // ---- FEED ----
+                    Obx(() {
+                      if (homeC.isLoading.value) {
+                        return SizedBox(
+                          height: 210.h,
+                          child: Center(child: CircularProgressIndicator(color: kprimaryColor, strokeWidth: 2)),
+                        );
+                      }
+
+                      if (homeC.error.value != null) {
+                        return _ErrorBox(msg: homeC.error.value!, onRetry: homeC.fetchTrendingBarbers);
+                      }
+
+                      if (homeC.barbers.isEmpty) {
+                        return _EmptyBox(message: "No trending barbers right now.");
+                      }
+
+                      return SizedBox(
+                        height: 250.h,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: homeC.barbers.length,
+                          separatorBuilder: (_, __) => 14.horizontalSpace,
+                          itemBuilder: (_, i) => _TrendingCard(data: homeC.barbers[i]),
+                        ),
+                      );
+                    }),
+
                     50.verticalSpace,
                     // Nearest
                     Row(
@@ -164,17 +218,36 @@ class HomeScreen extends StatelessWidget {
                     ),
                     12.verticalSpace,
 
-                    // Nearest list as a Column (no Expanded, no ListView!)
-                    _NearestTile(
-                      name: "Noah Wilson",
-                      address: "78 Willow Crescent, Vancouver, CA",
-                      onTap: () {
-                        // Custom action, e.g., navigate to a detail screen
-                        Get.to(() => BookNowScreen());
-                      },
-                    ),
-                    8.verticalSpace,
-                    _NearestTile(name: "Emily Harper", address: "132 Pennsylvania Square, NY"),
+                    Obx(() {
+                      if (homeC.nearestLoading.value) {
+                        return Container(height: 80, alignment: Alignment.center, child: const CircularProgressIndicator(strokeWidth: 2));
+                      }
+                      if (homeC.nearestError.value != null) {
+                        return _ErrorBox(msg: homeC.nearestError.value!, onRetry: homeC.fetchNearestBarbers);
+                      }
+                      final list = homeC.nearestTop3;
+                      if (list.isEmpty) {
+                        return const _EmptyBox(message: "No nearby barbers found.");
+                      }
+
+                      // show max 3 tiles
+                      return Column(
+                        children: list.map((b) {
+                          final address = (b.addressName?.isNotEmpty ?? false)
+                              ? b.addressName!
+                              : [b.addressLine1, b.city].where((e) => (e ?? '').isNotEmpty).join(', ');
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 8.h),
+                            child: _NearestTile(
+                              name: b.name ?? "Unknown",
+                              address: address,
+                              onTap: () => Get.to(() => BookNowScreen(barberData: b, isFromFav: false)),
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    }),
+
                     24.verticalSpace,
 
                     // Favorites
@@ -198,18 +271,36 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     12.verticalSpace,
-                    // List of favorites as a Column
-                    _FavoritesTile(
-                      name: "Olivia Brooks",
-                      address: "11 Maplewood Drive, Montreal, CA",
-                      onTap: () {
-                        // Custom action, e.g., navigate to a detail screen
-                        Get.to(() => BookNowScreen());
-                      },
-                    ),
 
-                    8.verticalSpace,
-                    _FavoritesTile(name: "Jack Reynolds", address: "213 Oakridge Court, Victoria, CA"),
+                    Obx(() {
+                      if (homeC.favoritesLoading.value) {
+                        return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                      }
+                      if (homeC.favoritesError.value != null) {
+                        return _ErrorBox(msg: homeC.favoritesError.value!, onRetry: homeC.refreshFavorites);
+                      }
+                      final list = homeC.favoritesTop3;
+                      if (list.isEmpty) {
+                        return const _EmptyBox(message: "No favorites yet.");
+                      }
+
+                      // Reuse your _FavoritesTile UI; show max 3
+                      return Column(
+                        children: list.map((b) {
+                          final address = (b.barber?.addressName?.isNotEmpty ?? false)
+                              ? b.barber?.addressName!
+                              : [b.barber?.addressLine1, b.barber?.city].where((e) => (e ?? '').isNotEmpty).join(', ');
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 8.h),
+                            child: _FavoritesTile(
+                              name: b.barber?.name ?? "Unknown",
+                              address: address ?? "",
+                              onTap: () => Get.to(() => BookNowScreen(favBarberData: b, isFromFav: true)),
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    }),
                     24.verticalSpace,
                   ],
                 ),
@@ -236,109 +327,6 @@ class _CurvedClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
-
-// Barber feature card
-
-class _BarberCard extends StatelessWidget {
-  final String name;
-  final String rating;
-  final String address;
-  final String image;
-  final Color yellow;
-  final VoidCallback? onTap;
-
-  const _BarberCard({
-    Key? key,
-    required this.name,
-    required this.rating,
-    required this.address,
-    required this.image,
-    required this.yellow,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 220.w,
-        height: 250.h,
-        decoration: BoxDecoration(
-          color: ksecondaryColor,
-          borderRadius: BorderRadius.circular(22.r),
-          boxShadow: [BoxShadow(color: black.withValues(alpha: 0.10), blurRadius: 16, offset: Offset(0, 4))],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(22.r)),
-              child: Image.asset(image, width: 220.w, height: 98.h, fit: BoxFit.cover),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(14.w, 8.h, 14.w, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 16.sp),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  3.verticalSpace,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          address,
-                          style: TextStyle(color: Colors.white54, fontSize: 11.5.sp, fontWeight: FontWeight.bold),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Icon(Icons.star, color: kprimaryColor, size: 16.sp),
-                      2.horizontalSpace,
-                      Text(
-                        rating,
-                        style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 13.sp),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(14.w, 0, 14.w, 12.h),
-              child: SizedBox(
-                width: double.infinity,
-                height: 36.h,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: yellow,
-                    foregroundColor: black,
-                    elevation: 0,
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
-                  ),
-                  onPressed: () {
-                    Get.to(() => BookNowScreen());
-                  },
-                  child: Text(
-                    'Book Now',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 // Nearest tile
@@ -534,4 +522,134 @@ void showAddressSelectorSheet(BuildContext context) {
       );
     },
   );
+}
+
+class _TrendingCard extends StatelessWidget {
+  final BarberData data;
+  const _TrendingCard({required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    final rating = (data.averageRating ?? 0).toStringAsFixed(1);
+    final imgUrl = data.image; // can be null
+    final address = (data.addressName?.isNotEmpty ?? false)
+        ? data.addressName!
+        : [data.addressLine1, data.city].where((e) => (e ?? '').isNotEmpty).join(', ');
+
+    return GestureDetector(
+      onTap: () => Get.to(() => BookNowScreen(barberData: data, isFromFav: false)),
+      child: Container(
+        width: 220.w,
+        height: 250.h,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: ksecondaryColor,
+          borderRadius: BorderRadius.circular(22.r),
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 16, offset: const Offset(0, 4))],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // cover
+            BackendImage(url: imgUrl, width: 220.w, height: 98.h, borderRadius: BorderRadius.circular(20)),
+            Padding(
+              padding: EdgeInsets.fromLTRB(14.w, 8.h, 14.w, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data.name ?? 'Unknown',
+                    style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 16.sp),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  4.verticalSpace,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          address,
+                          style: TextStyle(color: Colors.white60, fontSize: 11.5.sp, fontWeight: FontWeight.w500),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+
+                      Text(
+                        rating,
+                        style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 12.5.sp),
+                      ),
+                      3.horizontalSpace,
+                      Icon(Icons.star, color: kprimaryColor, size: 16.sp),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const Spacer(),
+            Padding(
+              padding: EdgeInsets.fromLTRB(14.w, 0, 14.w, 12.h),
+              child: SizedBox(
+                width: double.infinity,
+                height: 36.h,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kprimaryColor,
+                    foregroundColor: Colors.black,
+                    elevation: 0,
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+                  ),
+                  onPressed: () {
+                    // Navigate to barber detail / booking
+                    Get.to(() => BookNowScreen(barberData: data, isFromFav: false));
+                  },
+                  child: Text(
+                    'Book Now',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EmptyBox extends StatelessWidget {
+  final String message;
+  const _EmptyBox({required this.message});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 120,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(color: const Color(0xFF232323), borderRadius: BorderRadius.circular(14)),
+      child: Text(message, style: const TextStyle(color: Colors.white60)),
+    );
+  }
+}
+
+class _ErrorBox extends StatelessWidget {
+  final String msg;
+  final VoidCallback onRetry;
+  const _ErrorBox({required this.msg, required this.onRetry});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 140,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(color: const Color(0xFF2A1E1E), borderRadius: BorderRadius.circular(14)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(msg, style: const TextStyle(color: Colors.white70)),
+          const SizedBox(height: 10),
+          OutlinedButton(onPressed: onRetry, child: const Text('Retry')),
+        ],
+      ),
+    );
+  }
 }

@@ -1,7 +1,7 @@
 // lib/screens/main_screen.dart
 
 import 'package:cutcy/home/appointment/appointment_screen.dart';
-import 'package:cutcy/home/home/home_screen.dart';
+import 'package:cutcy/home/homes/home_screen.dart';
 import 'package:cutcy/home/profile/profile_screen.dart';
 import 'package:cutcy/navbar/bottom_nav_controller.dart';
 import 'package:cutcy/navbar/custom_bottom_nav_bar.dart';

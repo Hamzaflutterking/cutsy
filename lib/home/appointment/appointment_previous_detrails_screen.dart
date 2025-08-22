@@ -3,7 +3,7 @@
 import 'dart:ui';
 import 'package:cutcy/constants/constants.dart';
 
-import 'package:cutcy/home/bookings/booking_screen.dart';
+import 'package:cutcy/home/bookings/checkout_screen.dart';
 import 'package:cutcy/home/profile/aacounts/%20receipt_screen.dart';
 import 'package:cutcy/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class AppointmentPriviousDetailsScreen extends StatelessWidget {
               AuthButton(
                 text: "Reschedule Appointment",
                 onTap: () {
-                  Get.to(() => BookingScreen());
+                  Get.to(() => CheckoutScreen());
                 },
               ),
               10.verticalSpace,
