@@ -209,9 +209,18 @@ class BookNowScreen extends StatelessWidget {
                             children: [
                               _licensedTag(),
                               IconButton(
-                                onPressed: () => showProviderInfoBottomSheet(context),
+                                onPressed: () => showProviderInfoBottomSheet(
+                                  context,
+                                  barberData: isFromFav ? null : barberData,
+                                  favBarberData: isFromFav ? favBarberData : null,
+                                  isFromFav: isFromFav,
+                                ),
                                 icon: Icon(Icons.info_outline, color: white, size: 20.sp),
                               ),
+                              // IconButton(
+                              //   onPressed: () => showProviderInfoBottomSheet(context),
+                              //   icon: Icon(Icons.info_outline, color: white, size: 20.sp),
+                              // ),
                             ],
                           ),
                           6.verticalSpace,

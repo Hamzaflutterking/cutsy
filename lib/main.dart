@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 ApiService apiService = ApiService(baseUrl: ApiConfig.baseUrl);
 void main() async {
@@ -15,6 +16,11 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   await Get.putAsync(() => StorageService().init());
+
+  // Initialize Stripe
+  Stripe.publishableKey =
+      "pk_test_51RlxOTFHrNtzcFEelJi96TytlViGTgxJScgLC8EV9u2Y6YTrodeCaKTYowVR48BFm37FgrJGpyPRWobmkedwsvbA00U5fkM2eQ"; // Replace with your actual publishable key
+  await Stripe.instance.applySettings();
   runApp(const MyApp());
 }
 

@@ -1,78 +1,183 @@
-// lib/controllers/appointment_controller.dart
+import 'dart:developer' as dev;
 import 'package:cutcy/home/appointment/appointment_details_screen.dart';
+import 'package:cutcy/home/appointment/appointment_response_model.dart';
+import 'package:cutcy/main.dart';
+import 'package:cutcy/services/api_configs.dart';
+import 'package:cutcy/shared_preferences.dart';
 import 'package:get/get.dart';
 
-/// Simple model for an appointment
-class Appointment {
-  final String name;
-  final DateTime date;
-  final double price;
-
-  Appointment({required this.name, required this.date, required this.price});
-}
-
 class AppointmentController extends GetxController {
-  /// 0 = Upcoming, 1 = Ongoing, 2 = Past
   final selectedTab = 0.obs;
+  final isLoading = false.obs;
+  final Rxn<String> lastError = Rxn<String>();
 
-  /// Dummy data
-  final upcoming = <Appointment>[
-    Appointment(name: 'Richard Anderson', date: DateTime(2025, 8, 25), price: 123),
-    Appointment(name: 'Penny Hyper Barber', date: DateTime(2025, 8, 25), price: 123),
-  ];
-  final ongoing = <Appointment>[
-    Appointment(name: 'Penny Hyper Barber', date: DateTime(2025, 8, 25), price: 123),
-    Appointment(name: 'Richard Anderson', date: DateTime(2025, 8, 25), price: 123),
-  ];
-  final past = <Appointment>[
-    Appointment(name: 'Richard Anderson', date: DateTime(2025, 8, 25), price: 123),
-    Appointment(name: 'Penny Hyper Barber', date: DateTime(2025, 8, 25), price: 123),
-  ];
+  // Real appointment lists
+  final RxList<Appointment> upcoming = <Appointment>[].obs;
+  final RxList<Appointment> ongoing = <Appointment>[].obs;
+  final RxList<Appointment> past = <Appointment>[].obs;
 
-  /// Here’s the missing piece:
-  /// holds whichever Appointment you tapped
-  final selectedAppointment = Rxn<Appointment>();
+  final Rxn<Appointment> selectedAppointment = Rxn<Appointment>();
 
-  /// Switch tabs
-  void changeTab(int idx) => selectedTab.value = idx;
+  @override
+  void onInit() {
+    super.onInit();
+    loadAllAppointments();
+  }
 
-  /// Call this onTap of the list item:
-  void selectAppointment(Appointment appt) {
-    selectedAppointment.value = appt;
-    // navigate to details screen
+  void changeTab(int index) {
+    selectedTab.value = index;
+    // Load data for the selected tab if needed
+    switch (index) {
+      case 0:
+        if (upcoming.isEmpty) loadUpcomingAppointments();
+        break;
+      case 1:
+        if (ongoing.isEmpty) loadOngoingAppointments();
+        break;
+      case 2:
+        if (past.isEmpty) loadPastAppointments();
+        break;
+    }
+  }
+
+  void selectAppointment(Appointment appointment) {
+    selectedAppointment.value = appointment;
     Get.to(() => AppointmentDetailsScreen());
   }
 
-  // date and time things
-  RxInt selectedDateIndex = 0.obs;
-  RxSet<String> selectedTimeSlots = <String>{}.obs;
+  // Load all appointments at once
+  Future<void> loadAllAppointments() async {
+    await Future.wait([loadUpcomingAppointments(), loadOngoingAppointments(), loadPastAppointments()]);
+  }
 
-  final List<DateTime> availableDates = List.generate(7, (index) => DateTime.now().add(Duration(days: index)));
+  // Load past appointments
+  Future<void> loadPastAppointments() async {
+    try {
+      isLoading.value = true;
+      lastError.value = null;
 
-  final List<String> timeSlots = [
-    '08:00 - 09:00',
-    '09:00 - 10:00',
-    '10:00 - 11:00',
-    '11:00 - 12:00',
-    '12:00 - 13:00',
-    '13:00 - 14:00',
-    '14:00 - 15:00',
-    '15:00 - 16:00',
-    '16:00 - 17:00',
-    '17:00 - 18:00',
-    '18:00 - 19:00',
-    '19:00 - 20:00',
-    '20:00 - 21:00',
-    '21:00 - 22:00',
-    '22:00 - 23:00',
-    '23:00 - 24:00',
-  ];
+      apiService.setToken(StorageService.to.getString("token") ?? "");
 
-  void toggleTimeSlot(String slot) {
-    if (selectedTimeSlots.contains(slot)) {
-      selectedTimeSlots.remove(slot);
-    } else {
-      selectedTimeSlots.add(slot);
+      final response = await apiService.request(ApiConfig.userPastAppointments, method: "GET");
+
+      dev.log("Past appointments response: $response");
+
+      // ✅ Handle both success and "no data found" cases
+      if (response is Map<String, dynamic>) {
+        if (response["success"] == true && response["data"] != null) {
+          final appointmentResponse = AppointmentResponse.fromJson(response);
+          past.value = appointmentResponse.data ?? [];
+          dev.log("Loaded ${past.length} past appointments");
+        } else if (response["success"] == false && response["data"] == null) {
+          // Handle "no data found" case (404 with success: false)
+          past.value = [];
+          dev.log("No past appointments found");
+        } else {
+          past.value = [];
+          lastError.value = "Failed to load past appointments";
+        }
+      } else {
+        past.value = [];
+        lastError.value = "Invalid response format";
+      }
+    } catch (e) {
+      dev.log("Error loading past appointments: $e");
+      // ✅ Don't set error for "no data found" cases
+      if (!e.toString().contains("No") && !e.toString().contains("found")) {
+        lastError.value = "Error loading past appointments: $e";
+      }
+      past.value = [];
+    } finally {
+      isLoading.value = false;
     }
+  }
+
+  // Load upcoming appointments
+  Future<void> loadUpcomingAppointments() async {
+    try {
+      isLoading.value = true;
+      lastError.value = null;
+
+      apiService.setToken(StorageService.to.getString("token") ?? "");
+
+      final response = await apiService.request(ApiConfig.userUpcomingAppointments, method: "GET");
+
+      dev.log("Upcoming appointments response: $response");
+
+      // ✅ Handle both success and "no data found" cases
+      if (response is Map<String, dynamic>) {
+        if (response["success"] == true && response["data"] != null) {
+          final appointmentResponse = AppointmentResponse.fromJson(response);
+          upcoming.value = appointmentResponse.data ?? [];
+          dev.log("Loaded ${upcoming.length} upcoming appointments");
+        } else if (response["success"] == false && response["data"] == null) {
+          // Handle "no data found" case (404 with success: false)
+          upcoming.value = [];
+          dev.log("No upcoming appointments found");
+        } else {
+          upcoming.value = [];
+          lastError.value = "Failed to load upcoming appointments";
+        }
+      } else {
+        upcoming.value = [];
+        lastError.value = "Invalid response format";
+      }
+    } catch (e) {
+      dev.log("Error loading upcoming appointments: $e");
+      // ✅ Don't set error for "no data found" cases
+      if (!e.toString().contains("No") && !e.toString().contains("found")) {
+        lastError.value = "Error loading upcoming appointments: $e";
+      }
+      upcoming.value = [];
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // Load ongoing appointments
+  Future<void> loadOngoingAppointments() async {
+    try {
+      isLoading.value = true;
+      lastError.value = null;
+
+      apiService.setToken(StorageService.to.getString("token") ?? "");
+
+      final response = await apiService.request(ApiConfig.userOngoingAppointments, method: "GET");
+
+      dev.log("Ongoing appointments response: $response");
+
+      // ✅ Handle both success and "no data found" cases
+      if (response is Map<String, dynamic>) {
+        if (response["success"] == true && response["data"] != null) {
+          final appointmentResponse = AppointmentResponse.fromJson(response);
+          ongoing.value = appointmentResponse.data ?? [];
+          dev.log("Loaded ${ongoing.length} ongoing appointments");
+        } else if (response["success"] == false && response["data"] == null) {
+          // Handle "no data found" case (404 with success: false)
+          ongoing.value = [];
+          dev.log("No ongoing appointments found");
+        } else {
+          ongoing.value = [];
+          lastError.value = "Failed to load ongoing appointments";
+        }
+      } else {
+        ongoing.value = [];
+        lastError.value = "Invalid response format";
+      }
+    } catch (e) {
+      dev.log("Error loading ongoing appointments: $e");
+      // ✅ Don't set error for "no data found" cases
+      if (!e.toString().contains("No") && !e.toString().contains("found")) {
+        lastError.value = "Error loading ongoing appointments: $e";
+      }
+      ongoing.value = [];
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // Refresh all appointments
+  Future<void> refreshAppointments() async {
+    await loadAllAppointments();
   }
 }

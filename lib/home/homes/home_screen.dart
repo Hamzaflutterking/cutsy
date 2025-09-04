@@ -102,30 +102,51 @@ class HomeScreen extends StatelessWidget {
                     ),
                     22.verticalSpace,
                     // Search bar
-                    Container(
-                      decoration: BoxDecoration(color: Colors.yellow[100], borderRadius: BorderRadius.circular(14.r)),
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 3.h),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              style: TextStyle(color: black, fontSize: 15.sp),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Search services or barbers',
-                                hintStyle: TextStyle(color: Colors.black54, fontWeight: FontWeight.w400),
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => const BarberSearchScreen());
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(color: Colors.yellow[100], borderRadius: BorderRadius.circular(14.r)),
+                        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Search services or barbers',
+                                style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w400, fontSize: 15.sp),
                               ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.to(() => BarberSearchScreen());
-                            },
-                            child: Icon(Icons.search, color: Colors.black54, size: 22.sp),
-                          ),
-                        ],
+                            Icon(Icons.search, color: Colors.black54, size: 22.sp),
+                          ],
+                        ),
                       ),
                     ),
+                    // Container(
+                    //   decoration: BoxDecoration(color: Colors.yellow[100], borderRadius: BorderRadius.circular(14.r)),
+                    //   padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 3.h),
+                    //   child: Row(
+                    //     children: [
+                    //       Expanded(
+                    //         child: TextField(
+                    //           enabled: false,
+                    //           style: TextStyle(color: black, fontSize: 15.sp),
+                    //           decoration: InputDecoration(
+                    //             border: InputBorder.none,
+                    //             hintText: 'Search services or barbers',
+                    //             hintStyle: TextStyle(color: Colors.black54, fontWeight: FontWeight.w400),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       GestureDetector(
+                    //         onTap: () {
+                    //           Get.to(() => BarberSearchScreen());
+                    //         },
+                    //         child: Icon(Icons.search, color: Colors.black54, size: 22.sp),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     18.verticalSpace,
 
                     // Card scroll area

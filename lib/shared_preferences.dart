@@ -30,6 +30,16 @@ class StorageService extends GetxService {
     return _prefs.getBool(key) ?? false;
   }
 
+  // ✅ ADD THESE NEW METHODS FOR STRING LISTS
+  // Save & Get a String List
+  Future<void> setStringList(String key, List<String> value) async {
+    await _prefs.setStringList(key, value);
+  }
+
+  List<String> getStringList(String key) {
+    return _prefs.getStringList(key) ?? <String>[];
+  }
+
   // Clear all stored data (logout)
   Future<void> clearAll() async {
     log("sharedPreferences cleard");

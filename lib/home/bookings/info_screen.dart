@@ -2,6 +2,8 @@
 
 import 'dart:ui';
 import 'package:cutcy/constants/constants.dart';
+import 'package:cutcy/home/homes/barber_model.dart';
+import 'package:cutcy/home/homes/favs/fav_barber_model.dart' as fav_model;
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +12,11 @@ import 'package:latlong2/latlong.dart';
 
 class ProviderInfoScreen extends StatefulWidget {
   final ScrollController scrollController;
-  const ProviderInfoScreen({super.key, required this.scrollController});
+  final BarberData? barberData;
+  final fav_model.FavBarberData? favBarberData;
+  final bool isFromFav;
+
+  const ProviderInfoScreen({super.key, required this.scrollController, this.barberData, this.favBarberData, required this.isFromFav});
 
   @override
   State<ProviderInfoScreen> createState() => _ProviderInfoScreenState();
@@ -19,12 +25,76 @@ class ProviderInfoScreen extends StatefulWidget {
 class _ProviderInfoScreenState extends State<ProviderInfoScreen> {
   double selectedRating = 0;
 
+  // Helper getters for barber data
+  String get _barberName {
+    if (widget.isFromFav) {
+      return widget.favBarberData?.barber?.name ?? 'Unknown Barber';
+    } else {
+      return widget.barberData?.name ?? 'Unknown Barber';
+    }
+  }
+
+  String get _barberExperience {
+    if (widget.isFromFav) {
+      return widget.favBarberData?.barber?.barberExperience?.title ?? 'Experience not specified';
+    } else {
+      return widget.barberData?.barberExperience?.title ?? widget.barberData?.experience ?? 'Experience not specified';
+    }
+  }
+
+  double get _averageRating {
+    if (widget.isFromFav) {
+      return 4.8; // Fav model doesn't include rating
+    } else {
+      return widget.barberData?.averageRating ?? 4.8;
+    }
+  }
+
+  int get _totalReviews {
+    if (widget.isFromFav) {
+      return 114; // Fav model doesn't include review count
+    } else {
+      return widget.barberData?.totalReviews ?? 114;
+    }
+  }
+
+  String get _address {
+    if (widget.isFromFav) {
+      final b = widget.favBarberData?.barber;
+      if ((b?.addressName ?? '').isNotEmpty) return b!.addressName!;
+      return [b?.addressLine1, b?.city, b?.country].where((e) => (e ?? '').isNotEmpty).join(', ');
+    } else {
+      final b = widget.barberData;
+      if ((b?.addressName ?? '').isNotEmpty) return b!.addressName!;
+      return [b?.addressLine1, b?.city, b?.country].where((e) => (e ?? '').isNotEmpty).join(', ');
+    }
+  }
+
+  LatLng get _barberLocation {
+    if (widget.isFromFav) {
+      final b = widget.favBarberData?.barber;
+      return LatLng(b?.latitude ?? 43.651070, b?.longitude ?? -79.347015);
+    } else {
+      final b = widget.barberData;
+      return LatLng(b?.latitude ?? 43.651070, b?.longitude ?? -79.347015);
+    }
+  }
+
+  String? get _barberImage {
+    if (widget.isFromFav) {
+      return widget.favBarberData?.barber?.image as String?;
+    } else {
+      return widget.barberData?.image;
+    }
+  }
+
+  // Mock reviews data - you can replace this with real reviews from API
   final List<Map<String, dynamic>> reviews = [
-    {'rating': 5, 'comment': 'Fantastic!', 'user': 'John'},
-    {'rating': 5, 'comment': 'Loved my haircut!!', 'user': 'John'},
-    {'rating': 4, 'comment': 'Slow but nice', 'user': 'John'},
-    {'rating': 5, 'comment': 'Very polite!', 'user': 'John'},
-    {'rating': 5, 'comment': 'Polite and friendly', 'user': 'John'},
+    {'rating': 5, 'comment': 'Fantastic service! Really professional.', 'user': 'John D.', 'date': '1 week ago'},
+    {'rating': 5, 'comment': 'Loved my haircut! Will definitely come back.', 'user': 'Sarah M.', 'date': '2 weeks ago'},
+    {'rating': 4, 'comment': 'Good quality work, took a bit longer than expected.', 'user': 'Mike T.', 'date': '3 weeks ago'},
+    {'rating': 5, 'comment': 'Very polite and friendly barber!', 'user': 'Emma L.', 'date': '1 month ago'},
+    {'rating': 5, 'comment': 'Amazing attention to detail. Highly recommended!', 'user': 'David R.', 'date': '1 month ago'},
   ];
 
   @override
@@ -55,15 +125,22 @@ class _ProviderInfoScreenState extends State<ProviderInfoScreen> {
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [_licensedTag(), _iconButton(Icons.close, () => Get.back())]),
                 SizedBox(height: 8.h),
                 Text(
-                  "RICHARD ANDERSON",
+                  _barberName.toUpperCase(),
                   style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 18.sp),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  _address,
+                  style: TextStyle(color: Colors.white70, fontSize: 12.sp),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 16.h),
                 Row(
                   children: [
-                    _infoBox(Icons.workspace_premium_rounded, "02 years", "Experience"),
+                    _infoBox(Icons.workspace_premium_rounded, _barberExperience, "Experience"),
                     SizedBox(width: 16.w),
-                    _infoBox(Icons.star, "4.9", "Rating"),
+                    _infoBox(Icons.star, _averageRating.toStringAsFixed(1), "Rating"),
                   ],
                 ),
               ],
@@ -83,7 +160,7 @@ class _ProviderInfoScreenState extends State<ProviderInfoScreen> {
               height: 160.h,
               width: double.infinity,
               child: FlutterMap(
-                options: MapOptions(initialCenter: LatLng(43.651070, -79.347015), initialZoom: 14),
+                options: MapOptions(initialCenter: _barberLocation, initialZoom: 14),
                 children: [
                   TileLayer(
                     urlTemplate: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
@@ -93,10 +170,10 @@ class _ProviderInfoScreenState extends State<ProviderInfoScreen> {
                   MarkerLayer(
                     markers: [
                       Marker(
-                        point: LatLng(43.651070, -79.347015),
+                        point: _barberLocation,
                         width: 40.w,
                         height: 40.h,
-                        child: const Icon(Icons.location_pin, color: black, size: 40),
+                        child: Icon(Icons.location_pin, color: backgroundColor, size: 40),
                       ),
                     ],
                   ),
@@ -105,7 +182,7 @@ class _ProviderInfoScreenState extends State<ProviderInfoScreen> {
             ),
           ),
 
-          /// Ratings
+          /// Ratings Overview
           SizedBox(height: 16.h),
           Container(
             padding: EdgeInsets.all(16),
@@ -113,13 +190,20 @@ class _ProviderInfoScreenState extends State<ProviderInfoScreen> {
             child: Column(
               children: [
                 Text(
-                  "4.8",
+                  _averageRating.toStringAsFixed(1),
                   style: TextStyle(fontSize: 32.sp, color: white, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 4.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(5, (index) {
+                    return Icon(index < _averageRating.floor() ? Icons.star : Icons.star_border, color: kprimaryColor, size: 16.sp);
+                  }),
                 ),
                 SizedBox(height: 4.h),
                 Text("Overall Rating", style: TextStyle(color: Colors.white70)),
                 Text(
-                  "Based on 114 reviews",
+                  "Based on $_totalReviews reviews",
                   style: TextStyle(color: Colors.white54, fontSize: 12.sp),
                 ),
                 SizedBox(height: 12.h),
@@ -131,6 +215,21 @@ class _ProviderInfoScreenState extends State<ProviderInfoScreen> {
               ],
             ),
           ),
+
+          /// Services (if available)
+          if (_hasServices()) ...[
+            SizedBox(height: 16.h),
+            Text(
+              "SERVICES",
+              style: TextStyle(color: Colors.white70, fontSize: 13.sp),
+            ),
+            SizedBox(height: 8.h),
+            Container(
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(color: ksecondaryColor, borderRadius: BorderRadius.circular(12)),
+              child: Column(children: _buildServicesList()),
+            ),
+          ],
 
           SizedBox(height: 16.h),
           Text(
@@ -162,7 +261,7 @@ class _ProviderInfoScreenState extends State<ProviderInfoScreen> {
             children: List.generate(6, (i) {
               return Text(
                 i == 0 ? "All" : "$i",
-                style: TextStyle(color: selectedRating == i.toDouble() ? Colors.greenAccent : Colors.white54, fontSize: 12.sp),
+                style: TextStyle(color: selectedRating == i.toDouble() ? kprimaryColor : Colors.white54, fontSize: 12.sp),
               );
             }),
           ),
@@ -175,20 +274,80 @@ class _ProviderInfoScreenState extends State<ProviderInfoScreen> {
           SizedBox(height: 8.h),
 
           ...reviews.where((r) => selectedRating == 0 || r['rating'] == selectedRating).map((review) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(children: List.generate(review['rating'], (_) => Icon(Icons.star, size: 16, color: kprimaryColor))),
-                SizedBox(height: 4),
-                Text(review['comment'], style: TextStyle(color: white)),
-                Text(
-                  "John  •  1 week ago",
-                  style: TextStyle(color: Colors.white54, fontSize: 11.sp),
-                ),
-                SizedBox(height: 16),
-              ],
+            return Container(
+              margin: EdgeInsets.only(bottom: 16.h),
+              padding: EdgeInsets.all(12.r),
+              decoration: BoxDecoration(color: Colors.grey[850], borderRadius: BorderRadius.circular(8.r)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      ...List.generate(review['rating'], (_) => Icon(Icons.star, size: 16, color: kprimaryColor)),
+                      ...List.generate(5 - int.parse(review['rating'].toString()), (_) => Icon(Icons.star_border, size: 16, color: Colors.grey)),
+                      Spacer(),
+                      Text(
+                        review['date'],
+                        style: TextStyle(color: Colors.white54, fontSize: 10.sp),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    review['comment'],
+                    style: TextStyle(color: white, fontSize: 13.sp),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    "— ${review['user']}",
+                    style: TextStyle(color: Colors.white54, fontSize: 11.sp, fontStyle: FontStyle.italic),
+                  ),
+                ],
+              ),
             );
           }).toList(),
+
+          SizedBox(height: 50.h), // Bottom padding
+        ],
+      ),
+    );
+  }
+
+  bool _hasServices() {
+    if (widget.isFromFav) {
+      return widget.favBarberData?.barber?.barberService?.isNotEmpty ?? false;
+    } else {
+      return widget.barberData?.barberService?.isNotEmpty ?? false;
+    }
+  }
+
+  List<Widget> _buildServicesList() {
+    if (widget.isFromFav) {
+      final services = widget.favBarberData?.barber?.barberService ?? [];
+      return services.map((service) => _buildServiceItem(service.serviceCategory?.service ?? 'Service', service.price ?? '0')).toList();
+    } else {
+      final services = widget.barberData?.barberService ?? [];
+      return services.map((service) => _buildServiceItem(service.serviceCategory?.service ?? 'Service', service.price ?? '0')).toList();
+    }
+  }
+
+  Widget _buildServiceItem(String serviceName, String price) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4.h),
+      child: Row(
+        children: [
+          Icon(Icons.cut, color: kprimaryColor, size: 16.sp),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Text(
+              serviceName,
+              style: TextStyle(color: white, fontSize: 13.sp),
+            ),
+          ),
+          Text(
+            '\$$price',
+            style: TextStyle(color: kprimaryColor, fontSize: 13.sp, fontWeight: FontWeight.w600),
+          ),
         ],
       ),
     );
@@ -216,6 +375,8 @@ class _ProviderInfoScreenState extends State<ProviderInfoScreen> {
           value,
           style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14.sp),
           textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         Text(
           label,
@@ -226,18 +387,21 @@ class _ProviderInfoScreenState extends State<ProviderInfoScreen> {
     ),
   );
 
-  Widget _buildRatingBar(int star, int percent) => Row(
-    children: [
-      Text("$star", style: TextStyle(color: white, fontSize: 12)),
-      SizedBox(width: 4),
-      Icon(Icons.star, color: kprimaryColor, size: 14),
-      SizedBox(width: 8),
-      Expanded(
-        child: LinearProgressIndicator(value: percent / 100, backgroundColor: Colors.white10, color: kprimaryColor, minHeight: 8),
-      ),
-      SizedBox(width: 8),
-      Text("$percent%", style: TextStyle(color: white, fontSize: 12)),
-    ],
+  Widget _buildRatingBar(int star, int percent) => Padding(
+    padding: EdgeInsets.symmetric(vertical: 2.h),
+    child: Row(
+      children: [
+        Text("$star", style: TextStyle(color: white, fontSize: 12)),
+        SizedBox(width: 4),
+        Icon(Icons.star, color: kprimaryColor, size: 14),
+        SizedBox(width: 8),
+        Expanded(
+          child: LinearProgressIndicator(value: percent / 100, backgroundColor: Colors.white10, color: kprimaryColor, minHeight: 8),
+        ),
+        SizedBox(width: 8),
+        Text("$percent%", style: TextStyle(color: white, fontSize: 12)),
+      ],
+    ),
   );
 
   Widget _iconButton(IconData icon, VoidCallback onTap) => CircleAvatar(
@@ -249,8 +413,20 @@ class _ProviderInfoScreenState extends State<ProviderInfoScreen> {
   );
 }
 
-/// ✅ Show Modal Bottom Sheet with Background and Icons Fixed
-void showProviderInfoBottomSheet(BuildContext context) {
+/// ✅ Updated Modal Bottom Sheet function to accept barber data
+void showProviderInfoBottomSheet(BuildContext context, {BarberData? barberData, fav_model.FavBarberData? favBarberData, required bool isFromFav}) {
+  // Get the background image
+  String? imageUrl;
+  if (isFromFav) {
+    imageUrl = favBarberData?.barber?.image as String?;
+  } else {
+    imageUrl = barberData?.image;
+  }
+
+  final ImageProvider backgroundImage = (imageUrl != null && imageUrl.isNotEmpty)
+      ? NetworkImage(imageUrl)
+      : const AssetImage("assets/images/young-hispanic-haidresser-and-hairstylist-standing-2024-10-18-17-47-23-utc 1.png");
+
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -261,11 +437,8 @@ void showProviderInfoBottomSheet(BuildContext context) {
           // Background image
           Container(
             height: MediaQuery.of(context).size.height,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/young-hispanic-haidresser-and-hairstylist-standing-2024-10-18-17-47-23-utc 1.png"),
-                fit: BoxFit.cover,
-              ),
+            decoration: BoxDecoration(
+              image: DecorationImage(image: backgroundImage, fit: BoxFit.cover),
             ),
           ),
           // Top icons
@@ -283,7 +456,7 @@ void showProviderInfoBottomSheet(BuildContext context) {
                   color: backgroundColor,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
                 ),
-                child: ProviderInfoScreen(scrollController: controller),
+                child: ProviderInfoScreen(scrollController: controller, barberData: barberData, favBarberData: favBarberData, isFromFav: isFromFav),
               );
             },
           ),

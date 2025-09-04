@@ -80,6 +80,7 @@
 
 import 'package:cutcy/constants/constants.dart';
 import 'package:cutcy/home/appointment/appointment_controller.dart';
+import 'package:cutcy/home/appointment/appointment_response_model.dart'; // ✅ Add this import
 import 'package:cutcy/home/appointment/appointment_details_screen.dart';
 import 'package:cutcy/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
@@ -134,7 +135,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> with Single
             SizedBox(height: 10.h),
 
             Text(
-              "Your appointment has been successfully booked. You’ll receive a reminder before your appointment.",
+              "Your appointment has been successfully booked. You'll receive a reminder before your appointment.",
               style: TextStyle(color: Colors.white, fontSize: 14.sp),
               textAlign: TextAlign.center,
             ),
@@ -144,15 +145,30 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> with Single
             AuthButton(
               text: "View Appointment Details",
               onTap: () {
-                final ctrl = Get.find<AppointmentController>();
-                ctrl.selectedAppointment.value = widget.appointment; // ✅ Pass appointment
-                Get.to(() => AppointmentDetailsScreen());
+                // ✅ Fixed: Properly handle the AppointmentController
+                try {
+                  final ctrl = Get.find<AppointmentController>();
+                  ctrl.selectedAppointment.value = widget.appointment;
+                  Get.to(() => AppointmentDetailsScreen());
+                } catch (e) {
+                  // If controller doesn't exist, create it
+                  final ctrl = Get.put(AppointmentController());
+                  ctrl.selectedAppointment.value = widget.appointment;
+                  Get.to(() => AppointmentDetailsScreen());
+                }
               },
             ),
 
             SizedBox(height: 16.h),
 
-            AuthButton(text: "Go Back", onTap: () => Get.back()),
+            AuthButton(
+              text: "Go Back",
+              onTap: () {
+                // ✅ Go back to the main screen or home
+                Get.back();
+                Get.back(); // Go back twice to exit the booking flow
+              },
+            ),
           ],
         ),
       ),
